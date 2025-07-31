@@ -53,6 +53,22 @@ if 'link' in df.columns:
 else:
     st.dataframe(df.head(10))
 
+# ✅ Project Explanation (New Section)
+    st.markdown("### 🧠 What's This Dashboard All About?")
+    st.markdown("""
+    Welcome to your personal food intelligence dashboard! 🍽  
+    This analysis dives deep into Zomato’s restaurant data from Pune to reveal:
+
+    - ⭐ How diners and delivery users rate their experiences  
+    - 📍 Which neighborhoods are foodie magnets  
+    - 🍛 What cuisines dominate the local taste buds  
+    - 💸 How restaurant types impact pricing  
+    - 🔍 Where high ratings meet low costs for hidden gems  
+
+    Whether you're a curious customer, a restaurant owner, or a data enthusiast, this dashboard helps you discover patterns behind the plates!  
+    So sit tight, sip your chai, and let's decode Pune’s culinary code together. ☕📊
+    """)
+
 st.subheader("📌 Basic Information")
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -73,7 +89,15 @@ with col3:
         ax2.set_title("Dine Rating Distribution")
         st.pyplot(fig2)
         avg_dine = df['dine_rating'].mean()
-        st.markdown(f"🎯 Insight: The average diner gives a solid {avg_dine:.2f} stars. Not bad, Pune! 🍽")
+        st.markdown(f"""
+        <div style="background-color:#e8f4fd;padding:15px;border-radius:10px">
+        🎯 <b>Insightful Observation:</b><br><br>
+        On analyzing the dine-in rating distribution, we observe that the average rating given by customers is <b>{avg_dine:.2f} stars</b> 🌟.<br><br>
+        This suggests that diners in Pune generally enjoy positive in-house restaurant experiences. The smooth KDE curve indicates that ratings are mostly clustered around the mid to high range, reflecting a relatively consistent customer satisfaction level.<br><br>
+        ⭐ <i>This could imply that the city offers a solid dine-in culture with good ambiance, service, and food quality — making dining out a pleasant experience for most patrons.</i><br><br>
+        📌 <b>Tip:</b> Restaurants with consistently higher dine-in ratings can be promoted as "Top Dine-Out Spots in Pune" to attract more footfall!
+        </div>
+        """, unsafe_allow_html=True)
 with col4:
     if 'delivery_rating' in df:
         fig3, ax3 = plt.subplots(figsize=figsize)
@@ -81,7 +105,16 @@ with col4:
         ax3.set_title("Delivery Rating Distribution")
         st.pyplot(fig3)
         avg_del = df['delivery_rating'].mean()
-        st.markdown(f"📦 Insight: Delivery ratings hover around {avg_del:.2f}. Quick bites, happy hearts! 🙵")
+        st.markdown(f"""
+        <div style="background-color:#ffe9e6;padding:15px;border-radius:10px">
+        📦 <b>Delivery Insights:</b><br><br>
+        The average delivery rating sits at <b>{avg_del:.2f} stars</b> 🛵, highlighting a generally positive user experience with online orders in Pune.<br><br>
+        Unlike dine-in experiences, delivery success depends on multiple factors — packaging quality, punctuality, food temperature, and accurate order fulfillment.<br><br>
+        🚀 <i>The smoother KDE curve indicates a majority of ratings fall between 3.5 to 4.5, showing consistency in customer satisfaction — but with scope for improvement.</i><br><br>
+        💡 <b>Observation:</b> Restaurants with strong delivery ratings can be flagged as “Reliable for Online Orders,” ideal for working professionals and late-night cravings.<br>
+        This data can also help identify outliers — eateries with great food but poor delivery — and strategize improvements accordingly.
+        </div>
+        """, unsafe_allow_html=True)
 
 if 'Cost (RS)' in df and 'rest_type' in df:
     st.subheader("💰 Average Cost by Restaurant Type (Exploded)")
@@ -94,7 +127,9 @@ if 'Cost (RS)' in df and 'rest_type' in df:
     sns.barplot(x=avg_cost.values, y=avg_cost.index, ax=ax4, palette="Spectral")
     ax4.set_title("Avg. Cost by Individual Restaurant Type")
     st.pyplot(fig4)
-    st.markdown(f"💸 Observation: Fancy a luxurious meal? Try {avg_cost.idxmax()}, averaging ₹{int(avg_cost.max())}! 👑")
+    st.markdown( f"💸 *Observation:* Craving a fancy food experience? Look no further than *{avg_cost.idxmax()}, where an average meal costs around **₹{int(avg_cost.max())}*! 👑🍷\n\n"
+    "This chart showcases the *top 10 restaurant types* based on their average cost. It's a great way to spot where premium experiences lie vs budget-friendly options. 🧾\n\n"
+    "From quick bites to luxury lounges, this data helps both *diners make better choices* and *restaurateurs identify market positioning*. Whether you're saving or splurging, there’s a spot on this list for every appetite. 💼🍴")
 
 if 'loc' in df:
     st.subheader("📍 Top Locations by Outlet Count")
@@ -104,7 +139,9 @@ if 'loc' in df:
     ax5.set_title("Top 10 Locations")
     st.pyplot(fig5)
     top_loc = loc_count.index[0]
-    st.markdown(f"📍 Observation: {top_loc} is Pune’s food central with {loc_count.iloc[0]} joints lighting up the map!")
+    st.markdown(f"📍 *Observation:* Hungry in Pune? Head straight to *{top_loc}—the undisputed food capital with **{loc_count.iloc[0]}+* restaurants sizzling in just that area! 🍽🔥\n\n"
+    "This chart reveals the *top 10 foodie hotspots* across the city. Whether you're a casual eater or a gourmet explorer, these locations are *bursting with variety and vibes*. 🌆✨\n\n"
+    "Think beyond just quantity—each location represents a unique dining ecosystem. Use this as your *go-to guide for neighborhood food crawls* or business expansion strategies. 📊📍")
 
 if 'cuisine' in df and 'name' in df:
     st.subheader("🍛 Top Restaurants by Selected Cuisine")
@@ -132,9 +169,11 @@ if not corr_df.empty:
     fig_corr, ax_corr = plt.subplots(figsize=figsize)
     sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax_corr)
     st.pyplot(fig_corr)
-    st.markdown("🧠 Observation: Cost, votes, and ratings are in a tasty tango! Track the heatmap for foodie patterns.")
+    st.markdown("🧠 *Observation:* Ever wondered how much your wallet affects your taste buds? 💸🍴\n\n"
+    "This heatmap reveals the *hidden relationships* between cost, votes, and ratings. A *strong correlation* between votes and delivery ratings? That means customers love to leave reviews when the delivery rocks! 🚚💬\n\n"
+    "Curious patterns may emerge: are costlier places actually better rated, or do affordable joints steal the spotlight? 🔍 Dive into the heatmap to uncover where value and vibes align in Pune’s foodie world!")
 else:
-    st.info("Not enough data to show correlation heatmap.")
+        st.info("Not enough data to show correlation heatmap.")
 
 st.subheader("🍛 Cuisine Frequency (Top 15)")
 if 'cuisine' in df:
@@ -149,7 +188,11 @@ if 'cuisine' in df:
     st.pyplot(fig_cuisine)
     if not cuisine_freq.empty:
         top_cuisine = cuisine_freq.idxmax().title()
-        st.markdown(f"🍽 Observation: Craving what Pune loves most? It's {top_cuisine}, hands down! 😋")
+        st.markdown(
+        f"🍽 *Observation:* Hungry in Pune? You’re not alone craving *{top_cuisine}* – it’s the undisputed favorite across restaurants! 🔥\n\n"
+        "From cozy cafés to luxury diners, this cuisine dominates the city’s culinary scene. Whether you're a local foodie or a visitor, this trend might just help you pick your next meal. "
+        "Also, don't miss exploring the other popular cuisines on the chart – Pune's food culture is as diverse as its people! 🌮🍜🍕"
+    )
     else:
         st.markdown("Observation: No cuisine data available.")
 
@@ -159,7 +202,11 @@ if 'votes' in df and 'Cost (RS)' in df:
     sns.scatterplot(data=df, x='Cost (RS)', y='votes', hue='dine_rating', palette='cool', ax=ax_scatter)
     ax_scatter.set_title("Votes vs Cost")
     st.pyplot(fig_scatter)
-    st.markdown("🔎 Observation: Some pricey picks do pull the crowd—explore the scatter and find your vibe!")
+    st.markdown(
+    "🔎 *Observation:* The scatter reveals an interesting pattern—while some high-cost restaurants receive a flood of votes, many wallet-friendly places also enjoy strong popularity! "
+    "Look closely and you'll spot hidden gems: affordable joints with high ratings and loyal customers. 💬💸 "
+    "It's not just about price—it's about the experience, flavor, and value! ⭐🍽"
+)
 
 st.markdown("---")
 st.markdown("## 🚀 Wrapping Up: Your Foodie Footprint in Pune!")
